@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import CardList from "./components/CardList";
+import CardDetails from "./components/CardDetails";
+import "./App.css";
+
+const cards = [
+  {
+    id: 1,
+    name: "Doe",
+    firstName: "John",
+    email: "john.doe@gmail.com",
+    class: "Master 2",
+    cellPhone: "06-06-06-06-06",
+    pictureUrl: "https://fakeimg.pl/200x200/?text=John%20Doe&font=lobster"
+  },
+  {
+    id: 2,
+    name: "Doe",
+    firstName: "Jane",
+    email: "jane.doe@gmail.com",
+    class: "Master 2",
+    cellPhone: "06-06-06-06-06",
+    pictureUrl: "https://fakeimg.pl/200x200/?text=Jane%20Doe&font=lobster"
+  }
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CardList cards={cards} />
+    </>
   );
 }
 
