@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Dropdown } from "semantic-ui-react";
 import CardList from "./components/CardList";
 import "./App.css";
 
@@ -9,6 +10,7 @@ const cards = [
     firstName: "John",
     email: "john.doe@gmail.com",
     class: "Master 2",
+    classValue: "master-2",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=John%20Doe&font=arial",
     internshipAt: "Google",
@@ -20,6 +22,7 @@ const cards = [
     firstName: "Jane",
     email: "jane.doe@gmail.com",
     class: "Master 2",
+    classValue: "master-2",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Jane%20Doe&font=arial",
     internshipAt: "OVH",
@@ -31,6 +34,7 @@ const cards = [
     firstName: "Sam",
     email: "sam.doe@gmail.com",
     class: "Master 1",
+    classValue: "master-1",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Sam%20Doe&font=arial",
     internshipAt: "Code Concept",
@@ -41,7 +45,8 @@ const cards = [
     name: "Doe",
     firstName: "Jane",
     email: "Julie.doe@gmail.com",
-    class: "Master 2",
+    class: "Master 1",
+    classValue: "master-1",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Julie%20Doe&font=arial",
     inCampus: true
@@ -52,6 +57,7 @@ const cards = [
     firstName: "Mark",
     email: "mark.doe@gmail.com",
     class: "Master 2",
+    classValue: "master-2",
     cellPhone: "06-06-06-06-06",
     internshipAt: "SNCF",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Mark%20Doe&font=arial",
@@ -63,6 +69,7 @@ const cards = [
     firstName: "Erwan",
     email: "erwan.doe@gmail.com",
     class: "Master 2",
+    classValue: "master-2",
     cellPhone: "06-06-06-06-06",
     internshipAt: "Néo-Soft",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Erwan%20Doe&font=arial",
@@ -71,8 +78,28 @@ const cards = [
 ];
 
 function App() {
+  const [classValue, setClassValue] = useState("");
+  const [fitleredStudents, setFilteredStudents] = useState([]);
+
+  const classesOptions = [
+    { key: 1, value: "master-1", text: "Master 1" },
+    { key: 2, value: "master-2", text: "Master 2" }
+  ];
+
+  const handleFilterChange = (e, data) => {
+    console.log(data);
+    setClassValue(data.value);
+  };
   return (
     <>
+      <Dropdown
+        placeholder="Choisissez le niveau"
+        fluid
+        search
+        selection
+        options={classesOptions}
+        onChange={handleFilterChange}
+      />
       <CardList cards={cards} />
     </>
   );
