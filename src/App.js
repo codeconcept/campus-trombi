@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react";
 import CardList from "./components/CardList";
 import "./App.css";
@@ -49,6 +49,7 @@ const cards = [
     classValue: "master-1",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Julie%20Doe&font=arial",
+    internshipAt: "EDF",
     inCampus: true
   },
   {
@@ -81,6 +82,10 @@ function App() {
   const [classValue, setClassValue] = useState("");
   const [fitleredStudents, setFilteredStudents] = useState([]);
 
+  useEffect(() => {
+    setFilteredStudents(cards.filter(c => c.classValue === classValue));
+  }, [classValue]);
+
   const classesOptions = [
     { key: 1, value: "master-1", text: "Master 1" },
     { key: 2, value: "master-2", text: "Master 2" }
@@ -100,7 +105,11 @@ function App() {
         options={classesOptions}
         onChange={handleFilterChange}
       />
-      <CardList cards={cards} />
+      {fitleredStudents.length > 0 ? (
+        <CardList cards={fitleredStudents} />
+      ) : (
+        <CardList cards={cards} />
+      )}
     </>
   );
 }
