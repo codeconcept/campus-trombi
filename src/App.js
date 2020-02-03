@@ -11,6 +11,7 @@ const cards = [
     class: "Master 2",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=John%20Doe&font=arial",
+    internshipAt: "Google",
     inCampus: true
   },
   {
@@ -21,6 +22,7 @@ const cards = [
     class: "Master 2",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Jane%20Doe&font=arial",
+    internshipAt: "OVH",
     inCampus: false
   },
   {
@@ -31,6 +33,7 @@ const cards = [
     class: "Master 1",
     cellPhone: "06-06-06-06-06",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Sam%20Doe&font=arial",
+    internshipAt: "Code Concept",
     inCampus: false
   },
   {
@@ -50,6 +53,7 @@ const cards = [
     email: "mark.doe@gmail.com",
     class: "Master 2",
     cellPhone: "06-06-06-06-06",
+    internshipAt: "SNCF",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Mark%20Doe&font=arial",
     inCampus: true
   },
@@ -60,6 +64,7 @@ const cards = [
     email: "erwan.doe@gmail.com",
     class: "Master 2",
     cellPhone: "06-06-06-06-06",
+    internshipAt: "Néo-Soft",
     pictureUrl: "https://fakeimg.pl/360x360/?text=Erwan%20Doe&font=arial",
     inCampus: true
   }

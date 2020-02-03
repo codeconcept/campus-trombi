@@ -13,6 +13,7 @@ const CardModal = ({ student }) => (
         <p>classe : {student.class}</p>
         <p>tél. : {student.cellPhone}</p>
         <p>mail : {student.email}</p>
+        <p>en stage chez : {student.internshipAt}</p>
       </Modal.Description>
     </Modal.Content>
   </Modal>
