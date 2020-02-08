@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react";
 import CardList from "./components/CardList";
 import "./App.css";
+import Login from "./components/Login";
 
 const cards = [
   {
@@ -95,8 +96,15 @@ function App() {
     console.log(data);
     setClassValue(data.value);
   };
+
+  const handleLogin = credentials => {
+    console.log("credentials", credentials);
+  };
+
   return (
     <>
+      <Login login={handleLogin} />
+      <hr />
       <Dropdown
         placeholder="Choisissez le niveau"
         fluid
