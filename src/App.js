@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react";
+import axios from "axios";
 import CardList from "./components/CardList";
 import "./App.css";
 import Login from "./components/Login";
@@ -99,6 +100,15 @@ function App() {
 
   const handleLogin = credentials => {
     console.log("credentials", credentials);
+    const config = {
+      "Content-Type": "application/json"
+    };
+    axios
+      .post("http://localhost:3001/login", credentials, config)
+      .then(res => {
+        console.log("res.data", res.data);
+      })
+      .catch(err => console.error(err));
   };
 
   return (
