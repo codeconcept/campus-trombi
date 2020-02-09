@@ -63,7 +63,6 @@ export default function Login({ login, register }) {
           />
         </Form.Group>
         <Form.Group inline>
-          <label>Se connecter / créer un compte</label>
           <Form.Radio
             label="Login"
             value="login"

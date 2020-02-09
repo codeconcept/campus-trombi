@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Icon } from "semantic-ui-react";
+import CardModal from "./CardModal";
 
 export default function UserSummary({ user, disconnect }) {
   return (
@@ -12,6 +13,9 @@ export default function UserSummary({ user, disconnect }) {
             <Icon name="user close" />
           </Button.Content>
         </Button>
+        <span style={{ cursor: "pointer" }}>
+          <CardModal student={user} />
+        </span>
       </div>
     </>
   );
