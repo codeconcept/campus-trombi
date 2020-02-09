@@ -6,94 +6,35 @@ import "./App.css";
 import Login from "./components/Login";
 import UserSummary from "./components/UserSummary";
 
-const cards = [
-  {
-    id: 1,
-    name: "Doe",
-    firstName: "John",
-    email: "john.doe@gmail.com",
-    class: "Master 2",
-    classValue: "master-2",
-    cellPhone: "06-06-06-06-06",
-    pictureUrl: "https://fakeimg.pl/360x360/?text=John%20Doe&font=arial",
-    internshipAt: "Google",
-    inCampus: true
-  },
-  {
-    id: 2,
-    name: "Doe",
-    firstName: "Jane",
-    email: "jane.doe@gmail.com",
-    class: "Master 2",
-    classValue: "master-2",
-    cellPhone: "06-06-06-06-06",
-    pictureUrl: "https://fakeimg.pl/360x360/?text=Jane%20Doe&font=arial",
-    internshipAt: "OVH",
-    inCampus: false
-  },
-  {
-    id: 3,
-    name: "Doe",
-    firstName: "Sam",
-    email: "sam.doe@gmail.com",
-    class: "Master 1",
-    classValue: "master-1",
-    cellPhone: "06-06-06-06-06",
-    pictureUrl: "https://fakeimg.pl/360x360/?text=Sam%20Doe&font=arial",
-    internshipAt: "Code Concept",
-    inCampus: false
-  },
-  {
-    id: 4,
-    name: "Doe",
-    firstName: "Jane",
-    email: "Julie.doe@gmail.com",
-    class: "Master 1",
-    classValue: "master-1",
-    cellPhone: "06-06-06-06-06",
-    pictureUrl: "https://fakeimg.pl/360x360/?text=Julie%20Doe&font=arial",
-    internshipAt: "EDF",
-    inCampus: true
-  },
-  {
-    id: 5,
-    name: "Doe",
-    firstName: "Mark",
-    email: "mark.doe@gmail.com",
-    class: "Master 2",
-    classValue: "master-2",
-    cellPhone: "06-06-06-06-06",
-    internshipAt: "SNCF",
-    pictureUrl: "https://fakeimg.pl/360x360/?text=Mark%20Doe&font=arial",
-    inCampus: true
-  },
-  {
-    id: 6,
-    name: "Doe",
-    firstName: "Erwan",
-    email: "erwan.doe@gmail.com",
-    class: "Master 2",
-    classValue: "master-2",
-    cellPhone: "06-06-06-06-06",
-    internshipAt: "Néo-Soft",
-    pictureUrl: "https://fakeimg.pl/360x360/?text=Erwan%20Doe&font=arial",
-    inCampus: true
-  }
-];
-
 const STORAGE_KEY = "react-trombi";
 
 function App() {
   const [classValue, setClassValue] = useState("");
-  const [fitleredStudents, setFilteredStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [isLoginVisible, setIsLoginVisible] = useState(true);
   const [user, setUser] = useState({ name: "", email: "" });
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    setFilteredStudents(cards.filter(c => c.classValue === classValue));
-  }, [classValue]);
+    axios.get("http://localhost:3001/users").then(res => {
+      console.log("res.data.users", res.data.users);
+      setUsers(res.data.users);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!users) return;
+    if (classValue === "all-levels") {
+      return setFilteredStudents(users);
+    }
+    const filtered =
+      users.filter(c => c.classValue === classValue || c.classValue === "") ||
+      [];
+    setFilteredStudents(filtered);
+  }, [classValue, users]);
 
   const classesOptions = [
+    { key: 0, value: "all-levels", text: "Tous les niveaux" },
     { key: 1, value: "master-1", text: "Master 1" },
     { key: 2, value: "master-2", text: "Master 2" }
   ];
@@ -198,10 +139,10 @@ function App() {
         options={classesOptions}
         onChange={handleFilterChange}
       />
-      {fitleredStudents.length > 0 ? (
-        <CardList cards={fitleredStudents} />
+      {filteredStudents.length > 0 ? (
+        <CardList cards={filteredStudents} />
       ) : (
-        <CardList cards={cards} />
+        <CardList cards={users} />
       )}
     </>
   );
