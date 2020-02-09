@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Segment } from "semantic-ui-react";
 
 export default function Login({ login, register }) {
   const [credentials, setCredentials] = useState({
@@ -17,14 +17,23 @@ export default function Login({ login, register }) {
     } else {
       register(credentials);
     }
+    emptyFormFields();
   };
 
   const handleChange = e => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
+  const emptyFormFields = () => {
+    setCredentials({
+      name: "",
+      email: "",
+      password: ""
+    });
+  };
+
   return (
-    <>
+    <Segment>
       <Form onSubmit={handleSubmit}>
         <Form.Group widths="equal">
           <Form.Input
@@ -71,6 +80,6 @@ export default function Login({ login, register }) {
           {isLogin ? "se connecter" : "créer un compte"}
         </Form.Button>
       </Form>
-    </>
+    </Segment>
   );
 }

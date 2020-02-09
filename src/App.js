@@ -127,7 +127,7 @@ function App() {
   return (
     <>
       <Login login={handleLogin} register={handleRegister} />
-      <hr />
+      <br />
       <Dropdown
         placeholder="Choisissez le niveau"
         fluid
