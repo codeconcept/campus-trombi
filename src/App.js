@@ -4,6 +4,7 @@ import axios from "axios";
 import CardList from "./components/CardList";
 import "./App.css";
 import Login from "./components/Login";
+import UserSummary from "./components/UserSummary";
 
 const cards = [
   {
@@ -80,9 +81,13 @@ const cards = [
   }
 ];
 
+const STORAGE_KEY = "react-trombi";
+
 function App() {
   const [classValue, setClassValue] = useState("");
   const [fitleredStudents, setFilteredStudents] = useState([]);
+  const [isLoginVisible, setIsLoginVisible] = useState(true);
+  const [user, setUser] = useState({ name: "", email: "" });
 
   useEffect(() => {
     setFilteredStudents(cards.filter(c => c.classValue === classValue));
@@ -107,6 +112,9 @@ function App() {
       .post("http://localhost:3001/login", credentials, config)
       .then(res => {
         console.log("res.data", res.data);
+        saveTokenInLocalstorage(res.data.token);
+        setIsLoginVisible(false);
+        setUser(res.data.user);
       })
       .catch(err => console.error(err));
   };
@@ -120,13 +128,29 @@ function App() {
       .post("http://localhost:3001/register", credentials, config)
       .then(res => {
         console.log("res.data", res.data);
+        saveTokenInLocalstorage(res.data.token);
+        setIsLoginVisible(false);
+        setUser(res.data.user);
       })
       .catch(err => console.error(err));
   };
 
+  const saveTokenInLocalstorage = token => {
+    localStorage.setItem(STORAGE_KEY, token);
+  };
+
+  const disconnect = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setIsLoginVisible(true);
+  };
+
   return (
     <>
-      <Login login={handleLogin} register={handleRegister} />
+      {isLoginVisible ? (
+        <Login login={handleLogin} register={handleRegister} />
+      ) : (
+        <UserSummary user={user} disconnect={disconnect} />
+      )}
       <br />
       <Dropdown
         placeholder="Choisissez le niveau"
