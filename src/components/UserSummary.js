@@ -2,8 +2,7 @@ import React from "react";
 import { Button, Icon } from "semantic-ui-react";
 import CardModal from "./CardModal";
 
-export default function UserSummary({ user, disconnect }) {
-  //   console.log("user", user);
+export default function UserSummary({ user, disconnect, saveUser }) {
   const fullUser = Object.assign(
     {
       name: "",
@@ -29,7 +28,7 @@ export default function UserSummary({ user, disconnect }) {
           </Button.Content>
         </Button>
         <span style={{ cursor: "pointer" }}>
-          <CardModal student={fullUser} />
+          <CardModal student={fullUser} saveUser={saveUser} candEdit={true} />
         </span>
       </div>
     </>

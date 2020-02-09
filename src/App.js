@@ -144,12 +144,50 @@ function App() {
     setIsLoginVisible(true);
   };
 
+  const handleSave = user => {
+    console.log("handleSave user", user);
+    if (user.id !== undefined) {
+      updateUser(user);
+    } else {
+      user.id = Date.now();
+      createUser(user);
+    }
+  };
+
+  const updateUser = user => {
+    const config = {
+      "Content-Type": "application/json"
+    };
+    axios
+      .put(`http://localhost:3001/users/${user.id}`, user, config)
+      .then(res => {
+        console.log("res.data", res.data);
+      })
+      .catch(err => console.error(err));
+  };
+
+  const createUser = user => {
+    const config = {
+      "Content-Type": "application/json"
+    };
+    axios
+      .post(`http://localhost:3001/users/${user.id}`, user, config)
+      .then(res => {
+        console.log("res.data", res.data);
+      })
+      .catch(err => console.error(err));
+  };
+
   return (
     <>
       {isLoginVisible ? (
         <Login login={handleLogin} register={handleRegister} />
       ) : (
-        <UserSummary user={user} disconnect={disconnect} />
+        <UserSummary
+          user={user}
+          disconnect={disconnect}
+          saveUser={handleSave}
+        />
       )}
       <br />
       <Dropdown

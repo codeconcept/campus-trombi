@@ -12,7 +12,6 @@ import {
 } from "semantic-ui-react";
 
 const CardModal = props => {
-  console.log("{ ...props.student }", { ...props.student });
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [student, setStudent] = useState({ ...props.student });
 
@@ -21,8 +20,8 @@ const CardModal = props => {
   }, [props.student]);
 
   const handleSubmit = e => {
+    props.saveUser(student);
     e.preventDefault();
-    console.log("submit CardModal");
   };
 
   const handleChange = e => {
@@ -55,7 +54,7 @@ const CardModal = props => {
           <Header>
             {student.firstName} {student.name.toUpperCase()}
           </Header>
-          {radioButtons}
+          {props.candEdit === true ? radioButtons : null}{" "}
           <p>classe : {student.class}</p>
           <p>tél. : {student.cellPhone}</p>
           <p>mail : {student.email}</p>
@@ -139,6 +138,7 @@ const CardModal = props => {
                 />
               </Form.Field>
             </Form.Field>
+            <Form.Button type="submit">sauvegarder</Form.Button>
           </Form>
         </Modal.Description>
       </Modal.Content>
