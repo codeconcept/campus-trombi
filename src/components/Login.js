@@ -1,34 +1,76 @@
 import React, { useState } from "react";
+import { Form } from "semantic-ui-react";
 
-export default function Login({ login }) {
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
+export default function Login({ login, register }) {
+  const [credentials, setCredentials] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const [isLogin, setIsLogin] = useState(true);
+
   const handleSubmit = e => {
     e.preventDefault();
-    login(credentials);
+    if (isLogin) {
+      login(credentials);
+    } else {
+      register(credentials);
+    }
   };
 
   const handleChange = e => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={credentials.email}
-          onChange={handleChange}
-        />{" "}
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={credentials.password}
-          onChange={handleChange}
-        />{" "}
-        <button type="submit">login</button>
-      </form>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group widths="equal">
+          <Form.Input
+            fluid
+            label="Nom"
+            placeholder="Nom"
+            name="name"
+            value={credentials.name}
+            onChange={handleChange}
+          />
+          <Form.Input
+            fluid
+            label="Email"
+            placeholder="Email"
+            name="email"
+            value={credentials.email}
+            onChange={handleChange}
+          />
+          <Form.Input
+            fluid
+            label="Mot de passe"
+            placeholder="Mot de passe"
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group inline>
+          <label>Se connecter / créer un compte</label>
+          <Form.Radio
+            label="Login"
+            value="login"
+            checked={isLogin === true}
+            onChange={() => setIsLogin(true)}
+          />
+          <Form.Radio
+            label="Créer un compte"
+            value="register"
+            checked={isLogin === false}
+            onChange={() => setIsLogin(false)}
+          />
+        </Form.Group>
+        <Form.Button>
+          {isLogin ? "se connecter" : "créer un compte"}
+        </Form.Button>
+      </Form>
     </>
   );
 }

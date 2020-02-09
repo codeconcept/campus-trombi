@@ -111,9 +111,22 @@ function App() {
       .catch(err => console.error(err));
   };
 
+  const handleRegister = credentials => {
+    console.log("handleRegister credentials", credentials);
+    const config = {
+      "Content-Type": "application/json"
+    };
+    axios
+      .post("http://localhost:3001/register", credentials, config)
+      .then(res => {
+        console.log("res.data", res.data);
+      })
+      .catch(err => console.error(err));
+  };
+
   return (
     <>
-      <Login login={handleLogin} />
+      <Login login={handleLogin} register={handleRegister} />
       <hr />
       <Dropdown
         placeholder="Choisissez le niveau"
