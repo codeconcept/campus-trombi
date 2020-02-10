@@ -14,6 +14,7 @@ function App() {
   const [isLoginVisible, setIsLoginVisible] = useState(true);
   const [user, setUser] = useState({ name: "", email: "" });
   const [users, setUsers] = useState([]);
+  const [loading, setIsLoading] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:3001/users").then(res => {
@@ -102,7 +103,14 @@ function App() {
     axios
       .put(`http://localhost:3001/users/${user.id}`, user, config)
       .then(res => {
-        console.log("res.data", res.data);
+        console.log("updateUSer / res.data ", res.data);
+        axios.get("http://localhost:3001/users").then(res => {
+          setIsLoading(true);
+          console.log("res.data.users", res.data.users);
+          setFilteredStudents(res.data.users);
+          setUser(user);
+          setIsLoading(false);
+        });
       })
       .catch(err => console.error(err));
   };
@@ -114,7 +122,14 @@ function App() {
     axios
       .post(`http://localhost:3001/users/${user.id}`, user, config)
       .then(res => {
-        console.log("res.data", res.data);
+        console.log("createUser / res.data", res.data);
+        axios.get("http://localhost:3001/users").then(res => {
+          setIsLoading(true);
+          console.log("res.data.users", res.data.users);
+          setFilteredStudents(res.data.users);
+          setUser(user);
+          setIsLoading(false);
+        });
       })
       .catch(err => console.error(err));
   };
@@ -139,6 +154,7 @@ function App() {
         options={classesOptions}
         onChange={handleFilterChange}
       />
+      {loading && <h3>loading...</h3>}
       {filteredStudents.length > 0 ? (
         <CardList cards={filteredStudents} />
       ) : (

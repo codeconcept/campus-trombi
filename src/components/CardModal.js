@@ -9,7 +9,8 @@ import {
   Icon,
   Form,
   Input,
-  Dropdown
+  Dropdown,
+  Message
 } from "semantic-ui-react";
 
 const CLOUDINARY_URL = process.env.REACT_APP_CLOUDINARY_URL;
@@ -19,6 +20,7 @@ const CardModal = props => {
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [student, setStudent] = useState({ ...props.student });
   const [imagePreview, setImagePreview] = useState("");
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     setStudent({ ...props.student });
@@ -34,6 +36,7 @@ const CardModal = props => {
     } else {
       props.saveUser(student);
     }
+    setSuccess(true);
   };
 
   const handleChange = e => {
@@ -106,8 +109,16 @@ const CardModal = props => {
     return imageURL;
   };
 
+  const handleClose = () => {
+    console.log("closed");
+  };
+
   const inEditMode = (
-    <Modal trigger={<Icon name="male" />} centered={false}>
+    <Modal
+      trigger={<Icon name="male" />}
+      centered={false}
+      onClose={handleClose}
+    >
       <Modal.Header>Modifier votre fiche</Modal.Header>
       <Modal.Content image>
         <Image wrapped size="medium" src={student.pictureUrl} />
@@ -115,7 +126,7 @@ const CardModal = props => {
           <Header>{student.name.toUpperCase()}</Header>
           {radioButtons}
           <br />
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} success={success}>
             <Form.Field required>
               <label>Nom</label>
               <Input
@@ -177,6 +188,11 @@ const CardModal = props => {
               onChange={handleFileUploadChange}
             />
             <Image src={imagePreview} size="small" />
+            <Message
+              success
+              header="Profil mis à jour"
+              content="Vos données ont été sauvegardées"
+            />
             <Form.Button type="submit">sauvegarder</Form.Button>
           </Form>
         </Modal.Description>
