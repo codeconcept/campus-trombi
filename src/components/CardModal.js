@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 import {
   Header,
@@ -11,17 +12,28 @@ import {
   Dropdown
 } from "semantic-ui-react";
 
+const CLOUDINARY_URL = process.env.REACT_APP_CLOUDINARY_URL;
+const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+
 const CardModal = props => {
   const [isInEditMode, setIsInEditMode] = useState(false);
   const [student, setStudent] = useState({ ...props.student });
+  const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
     setStudent({ ...props.student });
   }, [props.student]);
 
-  const handleSubmit = e => {
-    props.saveUser(student);
+  const handleSubmit = async e => {
     e.preventDefault();
+    if (imagePreview !== "") {
+      const imageURL = await handleFileUpload();
+      console.log("imageURL", imageURL);
+      const updatedStudent = { ...student, pictureUrl: imageURL };
+      props.saveUser(updatedStudent);
+    } else {
+      props.saveUser(student);
+    }
   };
 
   const handleChange = e => {
@@ -75,6 +87,23 @@ const CardModal = props => {
       classValue: data.value,
       class: data.options.find(opt => opt["value"] === data.value).text
     });
+  };
+
+  const handleFileUploadChange = e => {
+    const files = e.target.files;
+    setStudent(previousState => ({ ...previousState, image: files[0] }));
+    setImagePreview(window.URL.createObjectURL(files[0]));
+  };
+
+  const handleFileUpload = async () => {
+    const data = new FormData();
+    data.append("file", student.image);
+    // second param is reactshop as this is what I used when I configured cloudinary back then
+    data.append("upload_preset", "reactshop");
+    data.append("cloud_name", CLOUDINARY_CLOUD_NAME);
+    const res = await axios.post(CLOUDINARY_URL, data);
+    const imageURL = res.data.url;
+    return imageURL;
   };
 
   const inEditMode = (
@@ -138,6 +167,16 @@ const CardModal = props => {
                 />
               </Form.Field>
             </Form.Field>
+            <Form.Field
+              control={Input}
+              name="media"
+              type="file"
+              label="Photo"
+              accept="image/*"
+              content="Sélectionnez une image"
+              onChange={handleFileUploadChange}
+            />
+            <Image src={imagePreview} size="small" />
             <Form.Button type="submit">sauvegarder</Form.Button>
           </Form>
         </Modal.Description>
